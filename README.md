@@ -10,8 +10,12 @@ whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 tbd image
 
 # Prepare compute ressources
-1. Setup and connect with EC2 instances
-2. Install Node Exporter
+
+Install Node Exporter
+  node exporter install.sh
+  node-exporter.service /etc/systemd/system/
+  node exporter setup.sh  
+  Port 9100
 
 # Prepare web application setup
 1. Docker
