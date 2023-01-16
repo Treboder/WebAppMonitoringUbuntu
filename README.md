@@ -72,17 +72,16 @@ We run both apps standalone via separate Docker container, without any dependenc
    * httpd.service
    * hello-world-rest.service
 
-# INSTALL AND CONFIGURE MONITORING STACK
-1. Prometheus
+# INSTALL PROMETHEUS
    
-   create prometheus user
+   1. create prometheus user
    ````   
    sudo useradd --no-create-home prometheus
    sudo mkdir /etc/prometheus
    sudo mkdir /var/lib/prometheus
    ````   
    
-   install Prometheus (download, extract and copy binaries before clean up)
+   2. install Prometheus (download, extract and copy binaries before clean up)
    ````      
    wget https://github.com/prometheus/prometheus/releases/download/v2.19.0/prometheus-2.19.0.linux-amd64.tar.gz
    tar xvfz prometheus-2.19.0.linux-amd64.tar.gz
@@ -94,15 +93,15 @@ We run both apps standalone via separate Docker container, without any dependenc
    rm -rf prometheus-2.19.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64   
    ````
    
-   create or replace the content of /etc/prometheus/prometheus.yml.
+   3. create or replace the content of /etc/prometheus/prometheus.yml.
    ````
    ````
    
-   Create /etc/systemd/system/prometheus.service
+   4. Create /etc/systemd/system/prometheus.service
    ````
    ````
    
-   change the permissions of the directories, files and binaries we just added to our system.
+   5. change the permissions of the directories, files and binaries we just added to our system.
    ````
    sudo chown prometheus:prometheus /etc/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/prometheus
@@ -112,15 +111,15 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo chown -R prometheus:prometheus /var/lib/prometheus
    ````
    
-   configure systemd
+   6. configure systemd
    ````
    sudo systemctl daemon-reload
    sudo systemctl enable prometheus   
    ````
    
-2. Blackbox Exporter
+# INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 
-3. Grafana
+# INSTALL AND CONFIGURE GRAFANA WITH DEMO DASHBOARDS
 
 # REFERENCES
 
