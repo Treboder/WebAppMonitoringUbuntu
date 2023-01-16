@@ -9,6 +9,21 @@ whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 
 tbd image
 
+# Prepare compute ressources
+1. Setup and connect with EC2 instances
+2. Install Node Exporter
+
+# Prepare web application setup
+1. Docker
+2. Apache Server
+3. REST Service
+4. Autostart 
+
+# Setup and configure monitoring stack 
+1. Prometheus
+2. Blackbox Exporter
+3. Grafana
+
 # REFERENCES
 
 * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
@@ -22,28 +37,3 @@ tbd image
 * [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full)
 * [Node Exporter for Prometheus Dashboard](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
 * [Prometheus Blackbox Exporter](https://grafana.com/grafana/dashboards/7587-prometheus-blackbox-exporter/)
-
-# PROCEDURE
-
-## 1. Setup EC2 instances
-
-### Setup and connect
-
-### Node Exporter
-
-## 2. Setup web applications
-
-### Docker
-
-### Apache Server
-
-### REST Service
-
-### Autostart 
-
-## 3. Setup Monitoring stack 
-
-### Prometheus
-
-### Grafana
-
