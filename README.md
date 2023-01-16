@@ -63,14 +63,14 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````  
 3. Run an exemplary REST Service as docker -> check endpoint on port 5050
    ````
-  	sudo docker pull vad1mo/hello-world-rest
+   sudo docker pull vad1mo/hello-world-rest
    sudo docker run -d -p 5050:5050 vad1mo/hello-world-rest
    curl localhost:5050/foo/bar
    ````
-4. Autostart all services (docker, httpd, and REST Service)
-   docker.service
-   httpd.service
-   hello-world-rest.service
+4. Autostart all services (docker, httpd, and REST Service) -> tbd
+   * docker.service
+   * httpd.service
+   * hello-world-rest.service
 
 # INSTALL AND CONFIGURE MONITORING STACK
 1. Prometheus
