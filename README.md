@@ -16,7 +16,7 @@ After provisioning the ressources, we install [Prometheus Node Exporter](https:/
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
  1. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
     -> [cf. scripts/node exporter install.sh](scripts/node%20exporter%20install.sh)
-    ```linux
+    ```
     sudo useradd --no-create-home node_exporter
     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
     tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
@@ -38,7 +38,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
 
     [Install]
     WantedBy=multi-user.target
-    ´´´
+    ```
  3. Configure systemd and start the servcie
     -> [cf. scripts/node exporter setup.sh](scripts/node%20exporter%20setup.sh)   
     ```
