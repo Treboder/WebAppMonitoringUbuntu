@@ -10,7 +10,8 @@ whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 tbd image
 
 # PREPARE COMPUTE RESOURCES
-After provisioning the ressources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
+We assume that two linux-based machines are available, one for the web applications and one for the monitoring stack.
+After provisioning the compute resources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
  1. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
     -> [cf. scripts/node exporter install.sh](scripts/node%20exporter%20install.sh)
@@ -47,10 +48,29 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     ```
 
 # SETUP WEB APPLICATIONS
-1. Docker
-2. Apache Server
-3. REST Service
-4. Autostart 
+We run both apps standalone via separate Docker container, without any dependencies between them.   
+1. Install and start Docker
+    ```
+    sudo yum update -y
+    sudo amazon-linux-extras install docker -y
+    sudo service docker start
+    ```
+2. Run Apache Server (httpd) as docker -> check welcome message on port 80 
+   ````
+   sudo docker pull httpd
+   sudo docker run -d -p 80:80 httpd
+   curl localhost:80
+   ````  
+3. Run an exemplary REST Service as docker -> check endpoint on port 5050
+   ````
+  	sudo docker pull vad1mo/hello-world-rest
+   sudo docker run -d -p 5050:5050 vad1mo/hello-world-rest
+   curl localhost:5050/foo/bar
+   ````
+4. Autostart all services (docker, httpd, and REST Service)
+   docker.service
+   httpd.service
+   hello-world-rest.service
 
 # INSTALL AND CONFIGURE MONITORING STACK
 1. Prometheus
