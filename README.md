@@ -74,7 +74,52 @@ We run both apps standalone via separate Docker container, without any dependenc
 
 # INSTALL AND CONFIGURE MONITORING STACK
 1. Prometheus
+   
+   create prometheus user
+   ````   
+   sudo useradd --no-create-home prometheus
+   sudo mkdir /etc/prometheus
+   sudo mkdir /var/lib/prometheus
+   ````   
+   
+   install Prometheus (download, extract and copy binaries before clean up)
+   ````      
+   wget https://github.com/prometheus/prometheus/releases/download/v2.19.0/prometheus-2.19.0.linux-amd64.tar.gz
+   tar xvfz prometheus-2.19.0.linux-amd64.tar.gz
+   sudo cp prometheus-2.19.0.linux-amd64/prometheus /usr/local/bin
+   sudo cp prometheus-2.19.0.linux-amd64/promtool /usr/local/bin/
+   sudo cp -r prometheus-2.19.0.linux-amd64/consoles /etc/prometheus
+   sudo cp -r prometheus-2.19.0.linux-amd64/console_libraries /etc/prometheus
+   sudo cp prometheus-2.19.0.linux-amd64/promtool /usr/local/bin/
+   rm -rf prometheus-2.19.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64   
+   ````
+   
+   create or replace the content of /etc/prometheus/prometheus.yml.
+   ````
+   ````
+   
+   Create /etc/systemd/system/prometheus.service
+   ````
+   ````
+   
+   change the permissions of the directories, files and binaries we just added to our system.
+   ````
+   sudo chown prometheus:prometheus /etc/prometheus
+   sudo chown prometheus:prometheus /usr/local/bin/prometheus
+   sudo chown prometheus:prometheus /usr/local/bin/promtool
+   sudo chown -R prometheus:prometheus /etc/prometheus/consoles
+   sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
+   sudo chown -R prometheus:prometheus /var/lib/prometheus
+   ````
+   
+   configure systemd
+   ````
+   sudo systemctl daemon-reload
+   sudo systemctl enable prometheus   
+   ````
+   
 2. Blackbox Exporter
+
 3. Grafana
 
 # REFERENCES
