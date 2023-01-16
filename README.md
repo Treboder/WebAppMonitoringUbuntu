@@ -46,13 +46,13 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     sudo systemctl status node-exporter
     ```
 
-# PREPARE WEB APPLICATION SETUP
+# SETUP WEB APPLICATIONS
 1. Docker
 2. Apache Server
 3. REST Service
 4. Autostart 
 
-# SETUP AND CONFIGURE MONITORING SETUP
+# INSTALL AND CONFIGURE MONITORING STACK
 1. Prometheus
 2. Blackbox Exporter
 3. Grafana
