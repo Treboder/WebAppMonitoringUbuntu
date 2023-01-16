@@ -74,15 +74,11 @@ We run both apps standalone via separate Docker container, without any dependenc
 
 # INSTALL PROMETHEUS
    
-   1. create prometheus user
+   1. Create user and install Prometheus (download, extract and copy binaries before clean up)
    ````   
    sudo useradd --no-create-home prometheus
    sudo mkdir /etc/prometheus
-   sudo mkdir /var/lib/prometheus
-   ````   
-   
-   2. install Prometheus (download, extract and copy binaries before clean up)
-   ````      
+   sudo mkdir /var/lib/prometheus      
    wget https://github.com/prometheus/prometheus/releases/download/v2.19.0/prometheus-2.19.0.linux-amd64.tar.gz
    tar xvfz prometheus-2.19.0.linux-amd64.tar.gz
    sudo cp prometheus-2.19.0.linux-amd64/prometheus /usr/local/bin
@@ -93,15 +89,15 @@ We run both apps standalone via separate Docker container, without any dependenc
    rm -rf prometheus-2.19.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64   
    ````
    
-   3. create or replace the content of /etc/prometheus/prometheus.yml.
+   2. Create or replace the content of /etc/prometheus/prometheus.yml
    ````
    ````
    
-   4. Create /etc/systemd/system/prometheus.service
+   3. Create /etc/systemd/system/prometheus.service
    ````
    ````
    
-   5. change the permissions of the directories, files and binaries we just added to our system.
+   4. Change the permissions and configure systemd 
    ````
    sudo chown prometheus:prometheus /etc/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/prometheus
@@ -109,17 +105,14 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo chown -R prometheus:prometheus /etc/prometheus/consoles
    sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
    sudo chown -R prometheus:prometheus /var/lib/prometheus
-   ````
    
-   6. configure systemd
-   ````
    sudo systemctl daemon-reload
    sudo systemctl enable prometheus   
    ````
    
 # INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 
-# INSTALL AND CONFIGURE GRAFANA WITH DEMO DASHBOARDS
+# INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS AND ALERTING
 
 # REFERENCES
 
