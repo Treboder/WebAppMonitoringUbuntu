@@ -9,9 +9,7 @@ whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 
 tbd image
 
-# INSTALL PROCEDURE
-
-# Prepare compute ressources
+# PREPARE COMPUTE RESOURCES
 After provisioning the ressources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
  1. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
@@ -48,13 +46,13 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     sudo systemctl status node-exporter
     ```
 
-# Prepare web application setup
+# PREPARE WEB APPLICATION SETUP
 1. Docker
 2. Apache Server
 3. REST Service
 4. Autostart 
 
-# Setup and configure monitoring stack 
+# SETUP AND CONFIGURE MONITORING SETUP
 1. Prometheus
 2. Blackbox Exporter
 3. Grafana
