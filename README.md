@@ -9,6 +9,8 @@ whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 
 tbd image
 
+# INSTALL PROCEDURE
+
 # Prepare compute ressources
 After provisioning the ressources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
