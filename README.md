@@ -13,7 +13,14 @@ tbd image
 We assume that two linux-based machines are available, one for the web applications and one for the monitoring stack.
 After provisioning the compute resources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
- 1. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
+ 1. Install Git in case you want to use the scripts and config files directly from this repo (https://github.com/Treboder/WebAppMonitoringEC2)
+    ````
+    sudo yum update -y
+    sudo yum install git -y
+    git version
+    git clone https://github.com/Treboder/WebAppMonitoringEC2
+    ````
+ 2. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
     -> [scripts/node_exporter_install.sh](scripts/node_exporter_install.sh)
     ```
     sudo useradd --no-create-home node_exporter
@@ -22,7 +29,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
- 2. Create /etc/systemd/system/node-exporter.service if it doesn’t exist
+ 3. Create /etc/systemd/system/node-exporter.service if it doesn’t exist
     -> [scripts/node_exporter.service](scripts/node_exporter.service)
     ```
     [Unit]
@@ -38,7 +45,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     [Install]
     WantedBy=multi-user.target
     ```
- 3. Configure systemd and start the servcie
+ 4. Configure systemd and start the servcie
     -> [scripts/node_exporter_setup.sh](scripts/node_exporter_setup.sh)   
     ```
     sudo systemctl daemon-reload
@@ -148,6 +155,7 @@ We run both apps standalone via separate Docker container, without any dependenc
 # 8. REFERENCES
 
 * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
+* [How To Install Git In AWS EC2 Instance](https://cloudaffaire.com/how-to-install-git-in-aws-ec2-instance/)
 * [Running an Apache web server using Docker on EC2](https://www.imrankhan.dev/pages/apache-docker-ec2.html)
 * [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/)
 * [DOCKER-CONTAINER AUTOMATISCH STARTEN](https://kofler.info/docker-container-automatisch-starten/)
