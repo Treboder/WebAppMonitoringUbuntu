@@ -169,9 +169,11 @@ We run both apps standalone via separate Docker container, without any dependenc
    
 # 6. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 
-# 7. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS AND ALERTING
+# 7. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
-# 8. REFERENCES
+# 8. SETUP DEMO ALERTING RULES
+
+# 9. REFERENCES
 
 * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
 * [How To Install Git In AWS EC2 Instance](https://cloudaffaire.com/how-to-install-git-in-aws-ec2-instance/)
