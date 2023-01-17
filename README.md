@@ -1,20 +1,20 @@
-# INTRODUCION
+# 1. INTRODUCION
 This demo projects shows how to setup a basic monitoring scenario based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 The idea is to monitor the health of web applications, in this case a [Apache Web Server](https://httpd.apache.org/) in its most basic configuration.
 We also show how to monitor an exemplary [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/). 
 Both web applications mentioned are supposed to run via [Docker](https://hub.docker.com/) on the same EC2 instance, 
 whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) are installed and configured on another EC2.
 
-# ARCHITECTURE
+# 2. ARCHITECTURE
 
 tbd image
 
-# PREPARE COMPUTE RESOURCES
+# 3. PREPARE COMPUTE RESOURCES
 We assume that two linux-based machines are available, one for the web applications and one for the monitoring stack.
 After provisioning the compute resources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
  1. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
-    -> [cf. scripts/node exporter install.sh](scripts/node%20exporter%20install.sh)
+    -> [cf. scripts/node_exporter_install.sh](scripts/node_exporter_install.sh)
     ```
     sudo useradd --no-create-home node_exporter
     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
@@ -23,7 +23,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
  2. Create /etc/systemd/system/node-exporter.service if it doesn’t exist
-    -> [cf. scripts/node-exporter.service](scripts/node-exporter.service)
+    -> [cf. scripts/node_exporter.service](scripts/node_exporter.service)
     ```
     [Unit]
     Description=Prometheus Node Exporter Service
@@ -39,15 +39,15 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     WantedBy=multi-user.target
     ```
  3. Configure systemd and start the servcie
-    -> [cf. scripts/node exporter setup.sh](scripts/node%20exporter%20setup.sh)   
+    -> [cf. scripts/node_exporter_setup.sh](scripts/node_exporter_setup.sh)   
     ```
     sudo systemctl daemon-reload
-    sudo systemctl enable node-exporter
-    sudo systemctl start node-exporter
-    sudo systemctl status node-exporter
+    sudo systemctl enable node_exporter
+    sudo systemctl start node_exporter
+    sudo systemctl status node_exporter
     ```
 
-# SETUP WEB APPLICATIONS
+# 4. SETUP WEB APPLICATIONS
 We run both apps standalone via separate Docker container, without any dependencies between them.   
 1. Install and start Docker
     ```
@@ -72,7 +72,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    * httpd.service
    * hello-world-rest.service
 
-# INSTALL PROMETHEUS
+# 5. INSTALL PROMETHEUS
    
    1. Create user and install Prometheus (download, extract and copy binaries before clean up)
    ````   
@@ -91,6 +91,15 @@ We run both apps standalone via separate Docker container, without any dependenc
    
    2. Create or replace the content of /etc/prometheus/prometheus.yml
    ````
+   global:
+    scrape_interval: 15s
+    external_labels:
+     monitor: 'prometheus'
+
+   scrape_configs:
+    - job_name: 'prometheus'
+      static_configs:
+        - targets: ['localhost:9090']
    ````
    
    3. Create /etc/systemd/system/prometheus.service
@@ -110,11 +119,11 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo systemctl enable prometheus   
    ````
    
-# INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
+# 6. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 
-# INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS AND ALERTING
+# 7. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS AND ALERTING
 
-# REFERENCES
+# 8. REFERENCES
 
 * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
 * [Running an Apache web server using Docker on EC2](https://www.imrankhan.dev/pages/apache-docker-ec2.html)
