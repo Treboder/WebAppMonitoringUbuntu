@@ -72,11 +72,14 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
 
 # 4. SETUP WEB APPLICATIONS
 We run both apps standalone via separate Docker container, without any dependencies between them.   
-1. Install and start Docker
+1. Install Docker and start as a service (on every reboot)
     ```
     sudo yum update -y
     sudo amazon-linux-extras install docker -y
-    sudo service docker start
+    sudo systemctl daemon-reload
+    sudo systemctl enable docker   
+    sudo systemctl start docker   
+    sudo systemctl status docker 
     ```
 2. Run Apache Server (httpd) as docker -> check welcome message on port 80 
    ````
@@ -90,10 +93,11 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo docker run -d -p 5050:5050 vad1mo/hello-world-rest
    curl localhost:5050/foo/bar
    ````
-4. Configure autostart for all web app services -> tbd
-   * docker.service
-   * sudo docker run -p 5050:5050 --name hello-world-rest -d --restart always vad1mo/hello-world-rest
-   * sudo docker run -p 8080:80 --name apache -d --restart always httpd
+4. Start web app services on every reboot automtically (--restart always)
+   ````
+   sudo docker run -p 5050:5050 --name hello-world-rest -d --restart always vad1mo/hello-world-rest
+   sudo docker run -p 8080:80 --name apache -d --restart always httpd
+   ````
 
 # 5. INSTALL PROMETHEUS
    
