@@ -107,7 +107,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    
    3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service
-   -> [scripts/prometheus.service]
+   -> [scripts/prometheus.service](scripts/prometheus.service)
    ````
    [Unit]
    Description=Prometheus
