@@ -157,6 +157,9 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo chown -R prometheus:prometheus /var/lib/prometheus   
    sudo systemctl daemon-reload
    sudo systemctl enable prometheus   
+   sudo systemctl start prometheus   
+   sudo systemctl status prometheus   
+   curl localhost:9090
    ````
    
 # 6. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
