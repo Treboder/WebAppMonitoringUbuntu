@@ -8,24 +8,38 @@ whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 The experimental setup described here contains two AWS EC2 instances of type t2.micro with following IP adresses used in config files described later:
 * 3.85.149.192 (Monitoring Stack Server)
 * 52.202.41.59 (Web Application Server)
+
 Please dont forget to adjust the IPs to your own IPs ;-)
 
-Monitoring Stack Server (3.85.149.192)
+# 2. ENDPOINTS OVERVIEW
+
+After performing all the steps described here, there will be following endpoints available. 
+
+## Monitoring Stack Server (3.85.149.192)
 * Node Exporter -> http://3.85.149.192:9100
 * Prometheus -> http://3.85.149.192:9090
 * Alert Manager -> http://3.85.149.192:9093
 * Grafana -> http://3.85.149.192:3000
 
-Web Application Server (52.202.41.59)
+## Web Application Server (52.202.41.59)
 * Node Exporter -> http://52.202.41.59:9100 
 * Apache -> http://52.202.41.59:80
 * REST -> http://52.202.41.59:5050 
 
-# 2. ARCHITECTURE
+# 3. ARCHITECTURE
 
 tbd image
 
-# 3. PREPARE COMPUTE RESOURCES
+# 4. SYSTEM SETUP PROCEDURE
+The entire procedure is organized in 6 sequential steps:
+* 4.1. PREPARE COMPUTE RESOURCES
+* 4.2. SETUP WEB APPLICATIONS
+* 4.3. INSTALL PROMETHEUS
+* 4.4. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
+* 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
+* 4.6. SETUP DEMO ALERTING RULES
+
+## 4.1. PREPARE COMPUTE RESOURCES
 We assume that two linux-based machines are available, one for the web applications and one for the monitoring stack.
 After provisioning the compute resources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
@@ -70,7 +84,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     sudo systemctl status node_exporter
     ```
 
-# 4. SETUP WEB APPLICATIONS
+## 4.2. SETUP WEB APPLICATIONS
 We run both apps standalone via separate Docker container, without any dependencies between them.   
 1. Install Docker and start as a service (on every reboot)
     ```
@@ -99,7 +113,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo docker run -p 8080:80 --name apache -d --restart always httpd
    ````
 
-# 5. INSTALL PROMETHEUS
+## 4.3. INSTALL PROMETHEUS
    
    1. Create user and install Prometheus (download, extract and copy binaries before clean up)
    -> [scripts/prometheus_install.sh](scripts/prometheus_install.sh)
@@ -171,13 +185,13 @@ We run both apps standalone via separate Docker container, without any dependenc
    curl localhost:9090
    ````
    
-# 6. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
+## 4.4. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 
-# 7. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
+## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
-# 8. SETUP DEMO ALERTING RULES
+## 4.6. SETUP DEMO ALERTING RULES
 
-# 9. REFERENCES
+# 5. REFERENCES
 
 * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
 * [How To Install Git In AWS EC2 Instance](https://cloudaffaire.com/how-to-install-git-in-aws-ec2-instance/)
