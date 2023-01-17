@@ -90,10 +90,10 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo docker run -d -p 5050:5050 vad1mo/hello-world-rest
    curl localhost:5050/foo/bar
    ````
-4. Autostart all services (docker, httpd, and REST Service) -> tbd
+4. Configure autostart for all web app services -> tbd
    * docker.service
-   * httpd.service
-   * hello-world-rest.service
+   * sudo docker run -p 5050:5050 --name hello-world-rest -d --restart always vad1mo/hello-world-rest
+   * sudo docker run -p 8080:80 --name apache -d --restart always httpd
 
 # 5. INSTALL PROMETHEUS
    
