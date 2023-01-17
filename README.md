@@ -14,7 +14,7 @@ We assume that two linux-based machines are available, one for the web applicati
 After provisioning the compute resources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
  1. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
-    -> [cf. scripts/node_exporter_install.sh](scripts/node_exporter_install.sh)
+    -> [scripts/node_exporter_install.sh](scripts/node_exporter_install.sh)
     ```
     sudo useradd --no-create-home node_exporter
     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
@@ -23,7 +23,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
  2. Create /etc/systemd/system/node-exporter.service if it doesn’t exist
-    -> [cf. scripts/node_exporter.service](scripts/node_exporter.service)
+    -> [scripts/node_exporter.service](scripts/node_exporter.service)
     ```
     [Unit]
     Description=Prometheus Node Exporter Service
@@ -39,7 +39,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     WantedBy=multi-user.target
     ```
  3. Configure systemd and start the servcie
-    -> [cf. scripts/node_exporter_setup.sh](scripts/node_exporter_setup.sh)   
+    -> [scripts/node_exporter_setup.sh](scripts/node_exporter_setup.sh)   
     ```
     sudo systemctl daemon-reload
     sudo systemctl enable node_exporter
@@ -75,6 +75,7 @@ We run both apps standalone via separate Docker container, without any dependenc
 # 5. INSTALL PROMETHEUS
    
    1. Create user and install Prometheus (download, extract and copy binaries before clean up)
+   -> [scripts/prometheus_install.sh](scripts/prometheus_install.sh)
    ````   
    sudo useradd --no-create-home prometheus
    sudo mkdir /etc/prometheus
@@ -89,7 +90,9 @@ We run both apps standalone via separate Docker container, without any dependenc
    rm -rf prometheus-2.19.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64   
    ````
    
-   2. Create or replace the content of /etc/prometheus/prometheus.yml
+   2. Configure Prometheus and specify node exporter endpoints as targets
+   Create or replace the content of /etc/prometheus/prometheus.yml
+   -> [scripts/prometheus.yml](scripts/prometheus.yml)
    ````
    global:
     scrape_interval: 15s
@@ -99,22 +102,41 @@ We run both apps standalone via separate Docker container, without any dependenc
    scrape_configs:
     - job_name: 'prometheus'
       static_configs:
-        - targets: ['localhost:9090']
+        - targets: ['localhost:9100']
+        - targets: ['WebApplicationServerPublicIP:9100']
    ````
    
-   3. Create /etc/systemd/system/prometheus.service
+   3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service
+   -> [scripts/prometheus.service]
    ````
+   [Unit]
+   Description=Prometheus
+   Wants=network-online.target
+   After=network-online.target
+
+   [Service]
+   User=prometheus
+   Group=prometheus
+   Type=simple
+   ExecStart=/usr/local/bin/prometheus \
+    --config.file /etc/prometheus/prometheus.yml \
+    --storage.tsdb.path /var/lib/prometheus/ \
+    --web.console.templates=/etc/prometheus/consoles \
+    --web.console.libraries=/etc/prometheus/console_libraries
+
+   [Install]
+   WantedBy=multi-user.target
    ````
    
-   4. Change the permissions and configure systemd 
+   4. Start Prometheus as a serivce after changing the permissions and configuring systemd 
+   -> [scripts/prometheus_setup.sh](scripts/prometheus_setup.sh)
    ````
    sudo chown prometheus:prometheus /etc/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/promtool
    sudo chown -R prometheus:prometheus /etc/prometheus/consoles
    sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
-   sudo chown -R prometheus:prometheus /var/lib/prometheus
-   
+   sudo chown -R prometheus:prometheus /var/lib/prometheus   
    sudo systemctl daemon-reload
    sudo systemctl enable prometheus   
    ````
