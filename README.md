@@ -126,7 +126,7 @@ We run both apps standalone via separate Docker container, without any dependenc
     - job_name: 'prometheus'
       static_configs:
         - targets: ['localhost:9100']
-        - targets: ['WebApplicationServerPublicIP:9100']
+        - targets: ['52.202.41.59:9100'] # dont forget to adjust with your IPs
    ````
    
    3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service
