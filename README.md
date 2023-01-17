@@ -5,6 +5,17 @@ We also show how to monitor an exemplary [Hello World REST Service](https://hub.
 Both web applications mentioned are supposed to run via [Docker](https://hub.docker.com/) on the same EC2 instance, 
 whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) are installed and configured on another EC2.
 
+Monitoring Stack Server
+* Node Exporter -> :9100
+* Prometheus -> :9090
+* Alert Manager -> :9093
+* Grafana -> :3000
+
+Web Application Server
+* Node Exporter -> :9100
+* Apache -> :80
+* REST -> :5050 
+
 # 2. ARCHITECTURE
 
 tbd image
@@ -135,7 +146,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    WantedBy=multi-user.target
    ````
    
-   4. Start Prometheus as a serivce after changing the permissions and configuring systemd 
+   4. Start Prometheus as a service after changing the permissions and configuring systemd 
    -> [scripts/prometheus_setup.sh](scripts/prometheus_setup.sh)
    ````
    sudo chown prometheus:prometheus /etc/prometheus
