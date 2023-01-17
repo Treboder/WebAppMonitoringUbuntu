@@ -5,16 +5,21 @@ We also show how to monitor an exemplary [Hello World REST Service](https://hub.
 Both web applications mentioned are supposed to run via [Docker](https://hub.docker.com/) on the same EC2 instance, 
 whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) are installed and configured on another EC2.
 
-Monitoring Stack Server
-* Node Exporter -> :9100
-* Prometheus -> :9090
-* Alert Manager -> :9093
-* Grafana -> :3000
+The experimental setup described here contains two AWS EC2 instances of type t2.micro with following IP adresses used in config files described later:
+* 3.85.149.192 (Monitoring Stack Server)
+* 52.202.41.59 (Web Application Server)
+Please dont forget to adjust the IPs to your own IPs ;-)
 
-Web Application Server
-* Node Exporter -> :9100
-* Apache -> :80
-* REST -> :5050 
+Monitoring Stack Server (3.85.149.192)
+* Node Exporter -> http://3.85.149.192:9100
+* Prometheus -> http://3.85.149.192:9090
+* Alert Manager -> http://3.85.149.192:9093
+* Grafana -> http://3.85.149.192:3000
+
+Web Application Server (52.202.41.59)
+* Node Exporter -> http://52.202.41.59:9100 
+* Apache -> http://52.202.41.59:80
+* REST -> http://52.202.41.59:5050 
 
 # 2. ARCHITECTURE
 
