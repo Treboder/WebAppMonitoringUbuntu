@@ -196,9 +196,9 @@ We run both apps standalone via separate Docker container, without any dependenc
    cp blackbox_exporter-0.14.0.linux-amd64/blackbox_exporter /usr/local/bin/blackbox_exporter
    chown blackbox_exporter:blackbox_exporter /usr/local/bin/blackbox_exporter
    rm -rf blackbox_exporter-0.14.0.linux-amd64*   
-   mkdir /etc/blackbox_exporter
-   vim /etc/blackbox_exporter/blackbox.yml
-   chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter/blackbox.yml
+   sudo mkdir /etc/blackbox_exporter
+   sudo touch /etc/blackbox_exporter/blackbox.yml
+   sudo chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter/blackbox.yml
    ````
    3. Populate config file /etc/blackbox_exporter/blackbox.yml 
    ````
