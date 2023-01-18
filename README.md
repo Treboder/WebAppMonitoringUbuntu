@@ -61,7 +61,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
  3. Create /etc/systemd/system/node-exporter.service if it doesn’t exist
-    -> [scripts/node_exporter.service](scripts/node_exporter.service)
+    -> [configs/node_exporter.service](configs/node_exporter.service)
     ```
     [Unit]
     Description=Prometheus Node Exporter Service
@@ -134,7 +134,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    
    2. Configure Prometheus and specify node exporter endpoints as targets
    Create or replace the content of /etc/prometheus/prometheus.yml
-   -> [scripts/prometheus.yml](scripts/prometheus.yml)
+   -> [configs/prometheus.yml](configs/prometheus.yml)
    ````
    global:
     scrape_interval: 15s
@@ -149,7 +149,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    
    3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service
-   -> [scripts/prometheus.service](scripts/prometheus.service)
+   -> [configs/prometheus.service](configs/prometheus.service)
    ````
    [Unit]
    Description=Prometheus
@@ -182,11 +182,24 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo systemctl daemon-reload
    sudo systemctl enable prometheus   
    sudo systemctl start prometheus   
-   sudo systemctl status prometheus   
-   curl localhost:9090
+   sudo systemctl status prometheus      
    ````
    
 ## 4.4. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
+
+   1. Create user and install binaries 
+   ````
+   ````
+   2. Prepare config file /etc/blackbox_exporter/blackbox.yml 
+   ````
+   ````
+   3. Populate config file
+   ````
+   ````
+   4. Create service file /etc/systemd/system/blackbox_exporter.service
+   ````
+   ````
+   5. Reload the systemd daemon and restart the service (on every reboot)
 
 ## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
