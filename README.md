@@ -281,6 +281,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    sudo yum install grafana -y
    sudo systemctl daemon-reload
+   sudo systemctl enable grafana-server
    sudo systemctl start grafana-server
    sudo systemctl status grafana-server
    ````
