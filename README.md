@@ -252,6 +252,11 @@ We run both apps standalone via separate Docker container, without any dependenc
       - target_label: __address__
         replacement: localhost:9115
    ````
+   7. Restart Prometheus
+   ````
+   sudo systemctl restart prometheus
+   sudo systemctl status prometheus
+   ````
 
 ## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
