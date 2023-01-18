@@ -237,25 +237,60 @@ We run both apps standalone via separate Docker container, without any dependenc
    Edit the prometheus config /etc/prometheus/prometheus.yml and append the following (using your IPs):
    ````
    - job_name: 'blackbox'
-    metrics_path: /probe
-    params:
+     metrics_path: /probe
+     params:
       module: [http_2xx]
-    static_configs:
-      - targets:
-        - http://52.202.41.59:8080 # for the Apache Server
-        - http://52.202.41.59:5050 # for the REST Service 
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: localhost:9115
+     static_configs:
+       - targets:
+         - http://52.202.41.59.8080
+         - http://52.202.41.59.5050
+     relabel_configs:
+       - source_labels: [__address__]
+         target_label: __param_target
+       - source_labels: [__param_target]
+         target_label: instance
+       - target_label: __address__
+         replacement: localhost:9115
+   ````
+   7. Restart Prometheus
+   ````
+   sudo systemctl restart prometheus
+   sudo systemctl status prometheus
    ````
 
 ## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
-## 4.6. SETUP DEMO ALERTING RULES
+   1. Update packages and create /etc/yum.repos.d/grafana.repo
+   ````
+   sudo yum update -y
+   sudo nano /etc/yum.repos.d/grafana.repo
+   ````
+   2. Add the text below to the repo file
+   ````
+   [grafana]
+   name=grafana
+   baseurl=https://packages.grafana.com/oss/rpm
+   repo_gpgcheck=1
+   enabled=1
+   gpgcheck=1
+   gpgkey=https://packages.grafana.com/gpg.key
+   sslverify=1
+   sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+   ````
+   3. Install Grafana and start as service
+   ````
+   sudo yum install grafana -y
+   sudo systemctl daemon-reload
+   sudo systemctl start grafana-server
+   sudo systemctl status grafana-server
+   ````
+   4. Connect with Prometheus and import few Dashboards
+   Grafana Dashboards are exposed to port :3000
+   Login works with user:admin nad password:admin.
+   After login, go to "Configuration" and add our Prometheus server as new data source
+   As a quickstart to import the following dashboards with their IDs:
+   * 11074 and/or 1860 visualizing node exporter metrics
+   * 7587 visualizing blackbox exporter metrics
 
 # 5. REFERENCES
 
