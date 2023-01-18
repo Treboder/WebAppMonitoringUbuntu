@@ -191,11 +191,11 @@ We run both apps standalone via separate Docker container, without any dependenc
    1. Create user, install binaries and prepare config file
    ````
    sudo useradd --no-create-home --shell /bin/false blackbox_exporter
-   sudo wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.14.0/blackbox_exporter-0.14.0.linux-amd64.tar.gz
-   sudo tar -xvf blackbox_exporter-0.14.0.linux-amd64.tar.gz
+   wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.14.0/blackbox_exporter-0.14.0.linux-amd64.tar.gz
+   tar -xvf blackbox_exporter-0.14.0.linux-amd64.tar.gz
    sudo cp blackbox_exporter-0.14.0.linux-amd64/blackbox_exporter /usr/local/bin/blackbox_exporter
    sudo chown blackbox_exporter:blackbox_exporter /usr/local/bin/blackbox_exporter
-   sudo rm -rf blackbox_exporter-0.14.0.linux-amd64*   
+   rm -rf blackbox_exporter-0.14.0.linux-amd64*   
    sudo mkdir /etc/blackbox_exporter
    sudo touch /etc/blackbox_exporter/blackbox.yml
    sudo chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter/blackbox.yml
