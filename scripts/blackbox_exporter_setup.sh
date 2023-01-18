@@ -1,0 +1,4 @@
+systemctl daemon-reload
+systemctl enable blackbox_exporter
+systemctl start blackbox_exporter
+systemctl status blackbox_exporter
