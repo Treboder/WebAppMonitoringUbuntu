@@ -288,11 +288,9 @@ We run both apps standalone via separate Docker container, without any dependenc
    Grafana Dashboards are exposed to port :3000
    Login works with user:admin nad password:admin.
    After login, go to "Configuration" and add our Prometheus server as new data source
-   As a quickstart to import the following dashboards:
+   As a quickstart to import the following dashboards with their IDs:
    * 11074 and/or 1860 visualizing node exporter metrics
    * 7587 visualizing blackbox exporter metrics
-      
-## 4.6. SETUP DEMO ALERTING RULES
 
 # 5. REFERENCES
 
