@@ -237,20 +237,20 @@ We run both apps standalone via separate Docker container, without any dependenc
    Edit the prometheus config /etc/prometheus/prometheus.yml and append the following (using your IPs):
    ````
    - job_name: 'blackbox'
-    metrics_path: /probe
-    params:
+     metrics_path: /probe
+     params:
       module: [http_2xx]
-    static_configs:
-      - targets:
-        - http://52.202.41.59:8080 # for the Apache Server
-        - http://52.202.41.59:5050 # for the REST Service 
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: localhost:9115
+     static_configs:
+       - targets:
+         - http://52.202.41.59.8080
+         - http://52.202.41.59.5050
+     relabel_configs:
+       - source_labels: [__address__]
+         target_label: __param_target
+       - source_labels: [__param_target]
+         target_label: instance
+       - target_label: __address__
+         replacement: localhost:9115
    ````
    7. Restart Prometheus
    ````
