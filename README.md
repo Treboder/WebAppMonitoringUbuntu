@@ -260,6 +260,38 @@ We run both apps standalone via separate Docker container, without any dependenc
 
 ## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
+   1. Update packages and create /etc/yum.repos.d/grafana.repo
+   ````
+   sudo yum update -y
+   sudo nano /etc/yum.repos.d/grafana.repo
+   ````
+   2. Add the text below to the repo file
+   ````
+   [grafana]
+   name=grafana
+   baseurl=https://packages.grafana.com/oss/rpm
+   repo_gpgcheck=1
+   enabled=1
+   gpgcheck=1
+   gpgkey=https://packages.grafana.com/gpg.key
+   sslverify=1
+   sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+   ````
+   3. Install Grafana and start as service
+   ````
+   sudo yum install grafana -y
+   sudo systemctl daemon-reload
+   sudo systemctl start grafana-server
+   sudo systemctl status grafana-server
+   ````
+   4. Connect with Prometheus and import few Dashboards
+   Grafana Dashboards are exposed to port :3000
+   Login works with user:admin nad password:admin.
+   After login, go to "Configuration" and add our Prometheus server as new data source
+   As a quickstart to import the following dashboards:
+   * 11074 and/or 1860 visualizing node exporter metrics
+   * 7587 visualizing blackbox exporter metrics
+      
 ## 4.6. SETUP DEMO ALERTING RULES
 
 # 5. REFERENCES
