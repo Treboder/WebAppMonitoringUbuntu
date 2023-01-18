@@ -1,19 +1,20 @@
 # 1. INTRODUCION
 This demo projects shows how to setup a basic monitoring scenario based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
-The idea is to monitor the health of web applications, in this case a [Apache Web Server](https://httpd.apache.org/) in its most basic configuration.
+The idea is to demonstrate a basic system setup for the health monitoring of typical web applications.
+For this purpose we use a [Apache Web Server](https://httpd.apache.org/) in its most basic configuration.
 We also show how to monitor an exemplary [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/). 
 Both web applications mentioned are supposed to run via [Docker](https://hub.docker.com/) on the same EC2 instance, 
 whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) are installed and configured on another EC2.
 
-The experimental setup described here contains two AWS EC2 instances of type t2.micro with following IP adresses used in config files described later:
+The experimental setup described here contains two AWS EC2 instances of type t2.micro with Amazon-Linux.
+We also use AWS' Elastic IPs with following IP adresses used in config files described later:
 * 3.85.149.192 (Monitoring Stack Server)
 * 52.202.41.59 (Web Application Server)
-
-Please dont forget to adjust the IPs to your own IPs ;-)
 
 # 2. ENDPOINTS OVERVIEW
 
 After performing all the steps described here, there will be following endpoints available. 
+Please dont forget to adjust the IPs to your own IPs ;-)
 
 ## Monitoring Stack Server (3.85.149.192)
 * Node Exporter -> http://3.85.149.192:9100
