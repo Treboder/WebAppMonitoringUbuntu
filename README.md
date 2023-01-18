@@ -228,10 +228,10 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    5. Reload the systemd daemon and restart the service (on every reboot)
    ````
-   systemctl daemon-reload
-   systemctl enable blackbox_exporter
-   systemctl start blackbox_exporter
-   systemctl status blackbox_exporter   
+   sudo systemctl daemon-reload
+   sudo systemctl enable blackbox_exporter
+   sudo systemctl start blackbox_exporter
+   sudo systemctl status blackbox_exporter   
    ````
    6. Configure Prometheus
    Edit the prometheus config /etc/prometheus/prometheus.yml and append the following (using your IPs):
