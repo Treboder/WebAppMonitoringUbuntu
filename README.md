@@ -18,6 +18,7 @@ Please dont forget to adjust the IPs to your own IPs ;-)
 
 ## Monitoring Stack Server (3.85.149.192)
 * Node Exporter -> http://3.85.149.192:9100
+* Black Exporter -> http://3.85.149.192:9115
 * Prometheus -> http://3.85.149.192:9090
 * Alert Manager -> http://3.85.149.192:9093
 * Grafana -> http://3.85.149.192:3000
@@ -189,17 +190,70 @@ We run both apps standalone via separate Docker container, without any dependenc
 
    1. Create user and install binaries 
    ````
+   useradd --no-create-home --shell /bin/false blackbox_exporter
+   wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.14.0/blackbox_exporter-0.14.0.linux-amd64.tar.gz
+   tar -xvf blackbox_exporter-0.14.0.linux-amd64.tar.gz
+   cp blackbox_exporter-0.14.0.linux-amd64/blackbox_exporter /usr/local/bin/blackbox_exporter
+   chown blackbox_exporter:blackbox_exporter /usr/local/bin/blackbox_exporter
+   rm -rf blackbox_exporter-0.14.0.linux-amd64*
    ````
    2. Prepare config file /etc/blackbox_exporter/blackbox.yml 
    ````
+   mkdir /etc/blackbox_exporter
+   vim /etc/blackbox_exporter/blackbox.yml
+   chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter/blackbox.yml
    ````
    3. Populate config file
    ````
+   modules:
+    http_2xx:
+     prober: http
+     timeout: 5s
+     http:
+      valid_status_codes: []
+      method: GET
    ````
    4. Create service file /etc/systemd/system/blackbox_exporter.service
    ````
+   [Unit]
+   Description=Blackbox Exporter
+   Wants=network-online.target
+   After=network-online.target
+
+   [Service]
+   User=blackbox_exporter
+   Group=blackbox_exporter
+   Type=simple
+   ExecStart=/usr/local/bin/blackbox_exporter --config.file /etc/blackbox_exporter/blackbox.yml
+
+   [Install]
+   WantedBy=multi-user.target
    ````
    5. Reload the systemd daemon and restart the service (on every reboot)
+   ````
+   systemctl daemon-reload
+   systemctl start blackbox_exporter
+   systemctl enable blackbox_exporter
+   ````
+   6. Configure Prometheus
+   Edit the prometheus config /etc/prometheus/prometheus.yml and append the following (using your IPs):
+   ````
+   - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://52.202.41.59:8080 # for the Apache Server
+        - http://52.202.41.59:5050 # for the REST Service 
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: localhost:9115
+   ````
 
 ## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
