@@ -25,10 +25,17 @@ git clone https://github.com/Treboder/WebAppMonitoringEC2
 	bash ./setup_web_app_server.sh
 	curl localhost:9100 
 	curl localhost:8080
-	curl localhost:5050/foo/bar
+	curl localhost:5050
 	````
 
 ## 2.2. SETUP MONITORING SERVER
+	````
+	bash ./setup_monitoring_server.sh
+	curl localhost:9100 
+	curl localhost:9115
+	curl localhost:9090
+	curl localhost:3000
+	````
 
 ## 2.3. ENDPOINTS OVERVIEW
 
