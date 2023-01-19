@@ -11,7 +11,24 @@ We also use AWS' Elastic IPs with following IP adresses used in config files des
 * 3.85.149.192 (Monitoring Stack Server)
 * 52.202.41.59 (Web Application Server)
 
-# 2. ENDPOINTS OVERVIEW
+# 2. QUICKSTART
+
+````
+sudo yum update -y
+sudo yum install git -y
+git version
+git clone https://github.com/Treboder/WebAppMonitoringEC2
+````
+
+## 2.1. SETUP WEB APPLICATION SERVER
+	````
+	./setup_web_app_server.sh
+	curl localhost:9100 
+	````
+
+## 2.2. SETUP MONITORING SERVER
+
+## 2.3. ENDPOINTS OVERVIEW
 
 After performing all the steps described here, there will be following endpoints available. 
 Please dont forget to adjust the IPs to your own IPs ;-)
