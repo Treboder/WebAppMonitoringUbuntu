@@ -14,8 +14,8 @@ scrape_configs:
     module: [http_2xx]
    static_configs:
      - targets:
-       - http://your_web_server_ip.8080
-       - http://your_web_server_ip.5050
+       - http://your_web_server_ip:8080
+       - http://your_web_server_ip:5050
    relabel_configs:
      - source_labels: [__address__]
        target_label: __param_target
