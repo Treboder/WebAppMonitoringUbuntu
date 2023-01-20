@@ -35,6 +35,7 @@ The script should have installed:
 * node exporter (:9100), 
 * httpd web server (:8080), and 
 * hello-world-rest-service (:5050)
+
 All services should be running and respond via following endpoints, what can be checked with:
 ````
 curl localhost:9100 
@@ -47,7 +48,8 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 * REST -> http://52.202.41.59:5050 
 
 ## 2.3. SETUP MONITORING SERVER
-SSH into your web app server and run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
+SSH into your web app server and adjust [prometheus.yml][configs/prometheus.yml] with your IPs.
+The simply run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
 ````
 bash ./setup_monitoring_server.sh
 ````
@@ -57,6 +59,7 @@ The script should have installed:
 * Prometheus (:9090)
 * Alert Manager (:9093)
 * Grafana -> (:3000)
+
 All services should be running and respond via following endpoints, what can be checked with:
 ````
 curl localhost:9100 
@@ -72,7 +75,7 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 * Alert Manager -> http://3.85.149.192:9093
 * Grafana -> http://3.85.149.192:3000
 
-## 2.4. FINAL CONFIG
+## 2.4. FINAL STEP
 Most of the work is done, since all services are up and running.
 The only thing to do now is to connect Grafana with Prometheus as a datasource and import some standard dashboards, which can be easily done via Grafana GUI.
 Its all set and you are free to play around with your web app monitoring stack. 
@@ -101,8 +104,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     git version
     git clone https://github.com/Treboder/WebAppMonitoringEC2
     ````
- 2. Create a user for Prometheus Node Exporter and install Node Exporter binaries 
-    -> [scripts/node_exporter_install.sh](scripts/node_exporter_install.sh)
+ 2. Create a user for Prometheus Node Exporter and install Node Exporter binaries.     
     ```
     sudo useradd --no-create-home node_exporter
     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
@@ -110,8 +112,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
- 3. Create /etc/systemd/system/node-exporter.service if it doesn’t exist
-    -> [configs/node_exporter.service](configs/node_exporter.service)
+ 3. Create /etc/systemd/system/node-exporter.service if it doesn’t exist.    
     ```
     [Unit]
     Description=Prometheus Node Exporter Service
@@ -126,8 +127,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     [Install]
     WantedBy=multi-user.target
     ```
- 4. Configure systemd and start the servcie
-    -> [scripts/node_exporter_setup.sh](scripts/node_exporter_setup.sh)   
+ 4. Configure systemd and start the servcie.    
     ```
     sudo systemctl daemon-reload
     sudo systemctl enable node_exporter
@@ -166,8 +166,7 @@ We run both apps standalone via separate Docker container, without any dependenc
 
 ## 4.3. INSTALL PROMETHEUS
    
-   1. Create user and install Prometheus (download, extract and copy binaries before clean up)
-   -> [scripts/prometheus_install.sh](scripts/prometheus_install.sh)
+   1. Create user and install Prometheus (download, extract and copy binaries before clean up)   
    ````   
    sudo useradd --no-create-home prometheus
    sudo mkdir /etc/prometheus
@@ -183,8 +182,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    
    2. Configure Prometheus and specify node exporter endpoints as targets
-   Create or replace the content of /etc/prometheus/prometheus.yml
-   -> [configs/prometheus.yml](configs/prometheus.yml)
+   Create or replace the content of /etc/prometheus/prometheus.yml.   
    ````
    global:
     scrape_interval: 15s
@@ -198,8 +196,7 @@ We run both apps standalone via separate Docker container, without any dependenc
         - targets: ['52.202.41.59:9100'] # dont forget to adjust with your IPs
    ````
    
-   3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service
-   -> [configs/prometheus.service](configs/prometheus.service)
+   3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service   
    ````
    [Unit]
    Description=Prometheus
@@ -220,8 +217,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    WantedBy=multi-user.target
    ````
    
-   4. Start Prometheus as a service after changing the permissions and configuring systemd 
-   -> [scripts/prometheus_setup.sh](scripts/prometheus_setup.sh)
+   4. Start Prometheus as a service after changing the permissions and configuring systemd.   
    ````
    sudo chown prometheus:prometheus /etc/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/prometheus
@@ -314,7 +310,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo yum update -y
    sudo nano /etc/yum.repos.d/grafana.repo
    ````
-   2. Add the text below to the repo file
+   2. Add the text below to the just created /etc/yum.repos.d/grafana.repo
    ````
    [grafana]
    name=grafana
@@ -344,15 +340,15 @@ We run both apps standalone via separate Docker container, without any dependenc
 
 # 5. REFERENCES
 
-* [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
-* [How To Install Git In AWS EC2 Instance](https://cloudaffaire.com/how-to-install-git-in-aws-ec2-instance/)
-* [Running an Apache web server using Docker on EC2](https://www.imrankhan.dev/pages/apache-docker-ec2.html)
-* [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/)
-* [DOCKER-CONTAINER AUTOMATISCH STARTEN](https://kofler.info/docker-container-automatisch-starten/)
-* [Install Prometheus on AWS EC2](https://codewizardly.com/prometheus-on-aws-ec2-part1/)
-* [Prometheus Node Exporter on AWS EC2](https://codewizardly.com/prometheus-on-aws-ec2-part2/)
-* [Install Blackbox Exporter to Monitor Websites With Prometheus](https://blog.ruanbekker.com/blog/2019/05/17/install-blackbox-exporter-to-monitor-websites-with-prometheus/)
-* [Installing Grafana on AWS EC2](https://medium.com/all-things-devops/how-to-install-grafana-on-aws-ec2-cefc01d5ff08)
-* [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full)
-* [Node Exporter for Prometheus Dashboard](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
-* [Prometheus Blackbox Exporter](https://grafana.com/grafana/dashboards/7587-prometheus-blackbox-exporter/)
+  * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
+  * [How To Install Git In AWS EC2 Instance](https://cloudaffaire.com/how-to-install-git-in-aws-ec2-instance/)
+  * [Running an Apache web server using Docker on EC2](https://www.imrankhan.dev/pages/apache-docker-ec2.html)
+  * [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/)
+  * [DOCKER-CONTAINER AUTOMATISCH STARTEN](https://kofler.info/docker-container-automatisch-starten/)
+  * [Install Prometheus on AWS EC2](https://codewizardly.com/prometheus-on-aws-ec2-part1/)
+  * [Prometheus Node Exporter on AWS EC2](https://codewizardly.com/prometheus-on-aws-ec2-part2/)
+  * [Install Blackbox Exporter to Monitor Websites With Prometheus](https://blog.ruanbekker.com/blog/2019/05/17/install-blackbox-exporter-to-monitor-websites-with-prometheus/)
+  * [Installing Grafana on AWS EC2](https://medium.com/all-things-devops/how-to-install-grafana-on-aws-ec2-cefc01d5ff08)
+  * [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full)
+  * [Node Exporter for Prometheus Dashboard](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
+  * [Prometheus Blackbox Exporter](https://grafana.com/grafana/dashboards/7587-prometheus-blackbox-exporter/)
