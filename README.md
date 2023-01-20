@@ -48,8 +48,9 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 * REST -> http://52.202.41.59:5050 
 
 ## 2.3. SETUP MONITORING SERVER
-SSH into your web app server and adjust [prometheus.yml][configs/prometheus.yml] with your IPs.
-The simply run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
+After SSH-ing into your monitoring machine, the very first step is to set the IP of your web app server. 
+The repo already contains the [prometheus.yml][configs/prometheus.yml] where Prometheus is configured, and IPs need to match your EC2 instances.
+Then simply run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
 ````
 bash ./setup_monitoring_server.sh
 ````
