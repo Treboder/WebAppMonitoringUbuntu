@@ -5,11 +5,7 @@ For this purpose we use a [Apache Web Server](https://httpd.apache.org/) in its 
 We also show how to monitor an exemplary [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/). 
 Both web applications mentioned are supposed to run via [Docker](https://hub.docker.com/) on the same EC2 instance, 
 whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) are installed and configured on another EC2.
-
-The experimental setup described here contains two AWS EC2 instances of type t2.micro with Amazon-Linux.
-We also use AWS' Elastic IPs with following IP adresses used in config files described later:
-* 3.85.149.192 (Monitoring Stack Server)
-* 52.202.41.59 (Web Application Server)
+The experimental setup described here contains two AWS EC2 instances of type t2.micro with Amazon-Linux, associated to AWS' Elastic IPs.
 
 # 2. QUICKSTART
 The project provides two shell scripts that manage the entire installation/configuration routine.
@@ -43,9 +39,9 @@ curl localhost:8080
 curl localhost:5050
 ````
 Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
-* Node Exporter -> http://52.202.41.59:9100 
-* Apache -> http://52.202.41.59:80
-* REST -> http://52.202.41.59:5050 
+* Node Exporter -> http://your_web_server_ip::9100 
+* Apache -> http://your_web_server_ip::80
+* REST -> http://your_web_server_ip::5050 
 
 ## 2.3. SETUP MONITORING SERVER
 After SSH-ing into your monitoring machine, the very first step is to set the IP of your web app server. 
@@ -70,11 +66,11 @@ curl localhost:9093
 curl localhost:3000
 ````
 Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
-* Node Exporter -> http://3.85.149.192:9100
-* Black Exporter -> http://3.85.149.192:9115
-* Prometheus -> http://3.85.149.192:9090
-* Alert Manager -> http://3.85.149.192:9093
-* Grafana -> http://3.85.149.192:3000
+* Node Exporter -> http://your_monitoring_server_ip:9100
+* Black Exporter -> http://your_monitoring_server_ip:9115
+* Prometheus -> http://your_monitoring_server_ip:9090
+* Alert Manager -> http://your_monitoring_server_ip:9093
+* Grafana -> http://your_monitoring_server_ip:3000
 
 ## 2.4. FINAL STEP
 Most of the work is done, since all services are up and running.
@@ -194,7 +190,7 @@ We run both apps standalone via separate Docker container, without any dependenc
     - job_name: 'prometheus'
       static_configs:
         - targets: ['localhost:9100']
-        - targets: ['52.202.41.59:9100'] # dont forget to adjust with your IPs
+        - targets: ['your_web_server_ip:9100'] # dont forget to adjust with your IPs
    ````
    
    3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service   
@@ -288,8 +284,8 @@ We run both apps standalone via separate Docker container, without any dependenc
       module: [http_2xx]
      static_configs:
        - targets:
-         - http://52.202.41.59.8080
-         - http://52.202.41.59.5050
+         - http://your_web_server_ip:8080
+         - http://your_web_server_ip:5050
      relabel_configs:
        - source_labels: [__address__]
          target_label: __param_target
