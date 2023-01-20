@@ -84,7 +84,7 @@ Its all set and you are free to play around with your web app monitoring stack.
 
 tbd image
 
-# 4. SYSTEM SETUP PROCEDURE
+# 4. SETUP PROCEDURE STEP-BY-STEP
 The entire procedure is organized in 6 sequential steps:
 * 4.1. PREPARE COMPUTE RESOURCES
 * 4.2. SETUP WEB APPLICATIONS
