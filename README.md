@@ -12,6 +12,12 @@ We also use AWS' Elastic IPs with following IP adresses used in config files des
 * 52.202.41.59 (Web Application Server)
 
 # 2. QUICKSTART
+The project provides two shell scripts that manage the entire installation/configuration routine.
+The first script prepares the web app server with two apps and the second sets up the monitoring server with Prometheus and Grafana. 
+After performing all the steps described here, all services should be up and running.
+The only thing to be done manually is to adjust the IPs to your own IPs ;-)
+
+## 2.1. PREREQUISITES
 Install Git and clone the repository on both server. 
 ````
 sudo yum update -y
@@ -20,48 +26,56 @@ git version
 git clone https://github.com/Treboder/WebAppMonitoringEC2
 ````
 
-## 2.1. SETUP WEB APPLICATION SERVER
-
-SSH into your web app server and run the (setup_web_app_server.sh)[setup_web_app_server.sh] script with:
+## 2.2. SETUP WEB APPLICATION SERVER
+SSH into your web app server and run the [setup_web_app_server.sh](setup_web_app_server.sh) script with:
 ````
 bash ./setup_web_app_server.sh
 ````
-
-The script should have installed node exporter (:9100), httpd web server (:8080) and the hello-world-rest-service (:5050).
-All services should be running and respond via following endpoints:
+The script should have installed:
+* node exporter (:9100), 
+* httpd web server (:8080), and 
+* hello-world-rest-service (:5050)
+All services should be running and respond via following endpoints, what can be checked with:
 ````
 curl localhost:9100 
 curl localhost:8080
 curl localhost:5050
 ````
-
-Given that your security group has properly configured inbound rules, we be able to access the following endpoints from "outside":
+Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
 * Node Exporter -> http://52.202.41.59:9100 
 * Apache -> http://52.202.41.59:80
 * REST -> http://52.202.41.59:5050 
 
-## 2.2. SETUP MONITORING SERVER
+## 2.3. SETUP MONITORING SERVER
+SSH into your web app server and run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
 ````
 bash ./setup_monitoring_server.sh
+````
+The script should have installed:
+* Node Exporter (:9100)
+* Black Exporter (:9115)
+* Prometheus (:9090)
+* Alert Manager (:9093)
+* Grafana -> (:3000)
+All services should be running and respond via following endpoints, what can be checked with:
+````
 curl localhost:9100 
 curl localhost:9115
 curl localhost:9090
+curl localhost:9093
 curl localhost:3000
 ````
-
-## 2.3. ENDPOINTS OVERVIEW
-
-After performing all the steps described here, there will be following endpoints available. 
-Please dont forget to adjust the IPs to your own IPs ;-)
-
-## Monitoring Stack Server (3.85.149.192)
+Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
 * Node Exporter -> http://3.85.149.192:9100
 * Black Exporter -> http://3.85.149.192:9115
 * Prometheus -> http://3.85.149.192:9090
 * Alert Manager -> http://3.85.149.192:9093
 * Grafana -> http://3.85.149.192:3000
 
-
+## 2.4. FINAL CONFIG
+Most of the work is done, since all services are up and running.
+The only thing to do now is to connect Grafana with Prometheus as a datasource and import some standard dashboards, which can be easily done via Grafana GUI.
+Its all set and you are free to play around with your web app monitoring stack. 
 
 # 3. ARCHITECTURE
 
