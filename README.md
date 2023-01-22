@@ -27,18 +27,18 @@ SSH into your web app server and run the [setup_web_app_server.sh](setup_web_app
 ````
 bash ./setup_web_app_server.sh
 ````
-The script should have installed:
+The script installs the node exporter and two demo web services:
 * node exporter (:9100), 
 * httpd web server (:8080), and 
 * hello-world-rest-service (:5050)
 
-All services should be running and respond via following endpoints, what can be checked with:
+The services should be running and we can check their status by calling their corresponding endpoints with:
 ````
 curl localhost:9100 
 curl localhost:8080
 curl localhost:5050
 ````
-Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
+Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the endpoints from "outside" with:
 * Node Exporter -> http://your_web_server_ip::9100 
 * Apache -> http://your_web_server_ip::80
 * REST -> http://your_web_server_ip::5050 
