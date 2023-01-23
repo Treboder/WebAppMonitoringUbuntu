@@ -15,7 +15,7 @@ The only thing to be done manually is to adjust the IPs to your own IPs ;-)
 
 ## 2.1. PREREQUISITES
 Install Git and clone the repository on both server. 
-````
+````console
 sudo yum update -y
 sudo yum install git -y
 git version
@@ -24,7 +24,7 @@ git clone https://github.com/Treboder/WebAppMonitoringEC2
 
 ## 2.2. SETUP WEB APPLICATION SERVER
 SSH into your web app server and run the [setup_web_app_server.sh](setup_web_app_server.sh) script with:
-````
+````console
 bash ./setup_web_app_server.sh
 ````
 The script installs the node exporter and two demo web services:
@@ -33,7 +33,7 @@ The script installs the node exporter and two demo web services:
 * hello-world-rest-service (:5050)
 
 The services should be running and we can check their status by calling their corresponding endpoints with:
-````
+````console
 curl localhost:9100 
 curl localhost:8080
 curl localhost:5050
@@ -47,7 +47,7 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 After SSH-ing into your monitoring machine, the very first step is to set the IP of your web app server. 
 The repo already contains the [prometheus.yml][configs/prometheus.yml] where Prometheus is configured, and IPs need to match your EC2 instances.
 Then simply run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
-````
+````console
 bash ./setup_monitoring_server.sh
 ````
 The script should have installed:
@@ -58,7 +58,7 @@ The script should have installed:
 * Grafana -> (:3000)
 
 All services should be running and respond via following endpoints, what can be checked with:
-````
+````console
 curl localhost:9100 
 curl localhost:9115
 curl localhost:9090
@@ -95,14 +95,14 @@ We assume that two linux-based machines are available, one for the web applicati
 After provisioning the compute resources, we install [Prometheus Node Exporter](https://github.com/prometheus/node_exporter) on both instances.
 As a result we should see the Node Exporter endpoint exposed to port 9100 (dont forget to open the port by adjusting the security group).
  1. Install Git in case you want to use the scripts and config files directly from this repo (https://github.com/Treboder/WebAppMonitoringEC2)
-    ````
+    ````console
     sudo yum update -y
     sudo yum install git -y
     git version
     git clone https://github.com/Treboder/WebAppMonitoringEC2
     ````
  2. Create a user for Prometheus Node Exporter and install Node Exporter binaries.     
-    ```
+    ```console
     sudo useradd --no-create-home node_exporter
     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
     tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
@@ -110,7 +110,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
  3. Create /etc/systemd/system/node-exporter.service if it doesn’t exist.    
-    ```
+    ```service
     [Unit]
     Description=Prometheus Node Exporter Service
     After=network.target
@@ -125,7 +125,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     WantedBy=multi-user.target
     ```
  4. Configure systemd and start the servcie.    
-    ```
+    ```console
     sudo systemctl daemon-reload
     sudo systemctl enable node_exporter
     sudo systemctl start node_exporter
@@ -135,7 +135,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
 ## 4.2. SETUP WEB APPLICATIONS
 We run both apps standalone via separate Docker container, without any dependencies between them.   
 1. Install Docker and start as a service (on every reboot)
-    ```
+    ```console
     sudo yum update -y
     sudo amazon-linux-extras install docker -y
     sudo systemctl daemon-reload
@@ -144,19 +144,19 @@ We run both apps standalone via separate Docker container, without any dependenc
     sudo systemctl status docker 
     ```
 2. Run Apache Server (httpd) as docker -> check welcome message on port 80 
-   ````
+   ````console
    sudo docker pull httpd
    sudo docker run -d -p 80:80 httpd
    curl localhost:80
    ````  
 3. Run an exemplary REST Service as docker -> check endpoint on port 5050
-   ````
+   ````console
    sudo docker pull vad1mo/hello-world-rest
    sudo docker run -d -p 5050:5050 vad1mo/hello-world-rest
    curl localhost:5050/foo/bar
    ````
 4. Start web app services on every reboot automtically (--restart always)
-   ````
+   ````console
    sudo docker run -p 5050:5050 --name hello-world-rest -d --restart always vad1mo/hello-world-rest
    sudo docker run -p 8080:80 --name apache -d --restart always httpd
    ````
@@ -164,7 +164,7 @@ We run both apps standalone via separate Docker container, without any dependenc
 ## 4.3. INSTALL PROMETHEUS
    
    1. Create user and install Prometheus (download, extract and copy binaries before clean up)   
-   ````   
+   ```` console  
    sudo useradd --no-create-home prometheus
    sudo mkdir /etc/prometheus
    sudo mkdir /var/lib/prometheus      
@@ -180,7 +180,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    
    2. Configure Prometheus and specify node exporter endpoints as targets
    Create or replace the content of /etc/prometheus/prometheus.yml.   
-   ````
+   ````yml
    global:
     scrape_interval: 15s
     external_labels:
@@ -194,7 +194,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    
    3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service   
-   ````
+   ````service
    [Unit]
    Description=Prometheus
    Wants=network-online.target
@@ -215,7 +215,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    
    4. Start Prometheus as a service after changing the permissions and configuring systemd.   
-   ````
+   ````console
    sudo chown prometheus:prometheus /etc/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/prometheus
    sudo chown prometheus:prometheus /usr/local/bin/promtool
@@ -231,7 +231,7 @@ We run both apps standalone via separate Docker container, without any dependenc
 ## 4.4. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 
    1. Create user, install binaries and prepare config file
-   ````
+   ````console
    sudo useradd --no-create-home --shell /bin/false blackbox_exporter
    wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.14.0/blackbox_exporter-0.14.0.linux-amd64.tar.gz
    tar -xvf blackbox_exporter-0.14.0.linux-amd64.tar.gz
@@ -243,7 +243,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo chown blackbox_exporter:blackbox_exporter /etc/blackbox_exporter/blackbox.yml
    ````
    3. Populate config file /etc/blackbox_exporter/blackbox.yml 
-   ````
+   ````yml
    modules:
     http_2xx:
      prober: http
@@ -253,7 +253,7 @@ We run both apps standalone via separate Docker container, without any dependenc
       method: GET
    ````
    4. Create service file /etc/systemd/system/blackbox_exporter.service
-   ````
+   ````service
    [Unit]
    Description=Blackbox Exporter
    Wants=network-online.target
@@ -269,7 +269,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    WantedBy=multi-user.target
    ````
    5. Reload the systemd daemon and restart the service (on every reboot)
-   ````
+   ````console
    sudo systemctl daemon-reload
    sudo systemctl enable blackbox_exporter
    sudo systemctl start blackbox_exporter
@@ -277,7 +277,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    6. Configure Prometheus
    Edit the prometheus config /etc/prometheus/prometheus.yml and append the following (using your IPs):
-   ````
+   ````yml
    - job_name: 'blackbox'
      metrics_path: /probe
      params:
@@ -295,7 +295,7 @@ We run both apps standalone via separate Docker container, without any dependenc
          replacement: localhost:9115
    ````
    7. Restart Prometheus
-   ````
+   ````console
    sudo systemctl restart prometheus
    sudo systemctl status prometheus
    ````
@@ -303,12 +303,12 @@ We run both apps standalone via separate Docker container, without any dependenc
 ## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
    1. Update packages and create /etc/yum.repos.d/grafana.repo
-   ````
+   ````console
    sudo yum update -y
    sudo nano /etc/yum.repos.d/grafana.repo
    ````
    2. Add the text below to the just created /etc/yum.repos.d/grafana.repo
-   ````
+   ````service
    [grafana]
    name=grafana
    baseurl=https://packages.grafana.com/oss/rpm
@@ -320,7 +320,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    sslcacert=/etc/pki/tls/certs/ca-bundle.crt
    ````
    3. Install Grafana and start as service
-   ````
+   ````console
    sudo yum install grafana -y
    sudo systemctl daemon-reload
    sudo systemctl enable grafana-server
