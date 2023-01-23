@@ -110,7 +110,7 @@ As a result we should see the Node Exporter endpoint exposed to port 9100 (dont 
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
     ```
  3. Create /etc/systemd/system/node-exporter.service if it doesn’t exist.    
-    ```console
+    ```service
     [Unit]
     Description=Prometheus Node Exporter Service
     After=network.target
@@ -194,7 +194,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    ````
    
    3. Prepare Prometheus to run as service and therefore create file /etc/systemd/system/prometheus.service   
-   ````console
+   ````service
    [Unit]
    Description=Prometheus
    Wants=network-online.target
@@ -253,7 +253,7 @@ We run both apps standalone via separate Docker container, without any dependenc
       method: GET
    ````
    4. Create service file /etc/systemd/system/blackbox_exporter.service
-   ````console
+   ````service
    [Unit]
    Description=Blackbox Exporter
    Wants=network-online.target
@@ -308,7 +308,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo nano /etc/yum.repos.d/grafana.repo
    ````
    2. Add the text below to the just created /etc/yum.repos.d/grafana.repo
-   ````console
+   ````service
    [grafana]
    name=grafana
    baseurl=https://packages.grafana.com/oss/rpm
