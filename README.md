@@ -54,7 +54,6 @@ The script should have installed:
 * Node Exporter (:9100)
 * Black Exporter (:9115)
 * Prometheus (:9090)
-* Alert Manager (:9093)
 * Grafana -> (:3000)
 
 All services should be running and respond via following endpoints, what can be checked with:
@@ -62,14 +61,12 @@ All services should be running and respond via following endpoints, what can be 
 curl localhost:9100 
 curl localhost:9115
 curl localhost:9090
-curl localhost:9093
 curl localhost:3000
 ````
 Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
 * Node Exporter -> http://your_monitoring_server_ip:9100
 * Black Exporter -> http://your_monitoring_server_ip:9115
 * Prometheus -> http://your_monitoring_server_ip:9090
-* Alert Manager -> http://your_monitoring_server_ip:9093
 * Grafana -> http://your_monitoring_server_ip:3000
 
 ## 2.4. FINAL STEP
