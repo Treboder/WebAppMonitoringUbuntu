@@ -1,5 +1,5 @@
 # 1. INTRODUCION
-This demo projects shows how to setup a basic monitoring scenario based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
+This project demonstrates a basic monitoring scenario based on [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 The idea is to demonstrate a basic system setup for the health monitoring of typical web applications.
 For this purpose we use a [Apache Web Server](https://httpd.apache.org/) in its most basic configuration.
 We also show how to monitor an exemplary [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/). 
