@@ -5,6 +5,7 @@ For this purpose we use a [Apache Web Server](https://httpd.apache.org/) in its 
 We also show how to monitor an exemplary [Hello World REST Service](https://hub.docker.com/r/vad1mo/hello-world-rest/). 
 Both web applications mentioned are supposed to run via [Docker](https://hub.docker.com/) on the same EC2 instance, 
 whereas [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/) are installed and configured on another EC2.
+Later we extend the monitoring stack with [Grafana Loki](https://grafana.com/oss/loki/) in order to trace logs.
 The experimental setup described here contains two AWS EC2 instances of type t2.micro with Amazon-Linux, associated to AWS' Elastic IPs.
 
 # 2. QUICKSTART
@@ -55,6 +56,7 @@ The script should have installed:
 * Black Exporter (:9115)
 * Prometheus (:9090)
 * Grafana -> (:3000)
+* Loki -> (:3100)
 
 All services should be running and respond via following endpoints, what can be checked with:
 ````console
@@ -62,12 +64,14 @@ curl localhost:9100
 curl localhost:9115
 curl localhost:9090
 curl localhost:3000
+curl localhost:3100/metrics
 ````
 Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
 * Node Exporter -> http://your_monitoring_server_ip:9100
 * Black Exporter -> http://your_monitoring_server_ip:9115
 * Prometheus -> http://your_monitoring_server_ip:9090
 * Grafana -> http://your_monitoring_server_ip:3000
+* Loki -> http://your_monitoring_server_ip:3100
 
 ## 2.4. FINAL STEP
 Most of the work is done, since all services are up and running.
@@ -85,7 +89,8 @@ The entire procedure is organized in 6 sequential steps:
 * 4.3. INSTALL PROMETHEUS
 * 4.4. INSTALL BLACKBOX EXPORTER AND CONFIGURE PROMETHEUS
 * 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
-* 4.6. SETUP DEMO ALERTING RULES
+* 4.6 Install and Configure Loki
+* 4.7 Install and Configure Promtail
 
 ## 4.1. PREPARE COMPUTE RESOURCES
 We assume that two linux-based machines are available, one for the web applications and one for the monitoring stack.
@@ -332,6 +337,12 @@ We run both apps standalone via separate Docker container, without any dependenc
    * 11074 and/or 1860 visualizing node exporter metrics
    * 7587 visualizing blackbox exporter metrics
 
+## 4.6 Install and Configure Loki
+-> [Install Loki Binary and Start as a Service](https://sbcode.net/grafana/install-loki-service/)
+ 
+## 4.7 Install and Configure Promtail
+
+
 # 5. REFERENCES
 
   * [How to create an EC2 instance from AWS Console](https://www.techtarget.com/searchcloudcomputing/tutorial/How-to-create-an-EC2-instance-from-AWS-Console)
@@ -346,3 +357,6 @@ We run both apps standalone via separate Docker container, without any dependenc
   * [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full)
   * [Node Exporter for Prometheus Dashboard](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
   * [Prometheus Blackbox Exporter](https://grafana.com/grafana/dashboards/7587-prometheus-blackbox-exporter/)
+  * [Install and run Grafana Loki locally](https://grafana.com/docs/loki/latest/installation/local/)
+  * [Install Loki Binary and Start as a Service](https://sbcode.net/grafana/install-loki-service/)
+  * [Install Promtail Binary and Start as a Service](https://sbcode.net/grafana/install-promtail-service/)
