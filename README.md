@@ -91,6 +91,7 @@ The entire procedure is organized in 6 sequential steps:
 * 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 * 4.6 Install and Configure Loki
 * 4.7 Install and Configure Promtail
+* 4.8 Grafana Loki Dashboard
 
 ## 4.1. PREPARE COMPUTE RESOURCES
 We assume that two linux-based machines are available, one for the web applications and one for the monitoring stack.
@@ -336,12 +337,15 @@ We run both apps standalone via separate Docker container, without any dependenc
    As a quickstart to import the following dashboards with their IDs:
    * 11074 and/or 1860 visualizing node exporter metrics
    * 7587 visualizing blackbox exporter metrics
+   * 13186 Loki Dashboard
 
 ## 4.6 Install and Configure Loki
 -> [Install Loki Binary and Start as a Service](https://sbcode.net/grafana/install-loki-service/)
  
 ## 4.7 Install and Configure Promtail
 
+## 4.8 Grafana Loki Dashboard
+* 13186 Loki Dashboard
 
 # 5. REFERENCES
 
