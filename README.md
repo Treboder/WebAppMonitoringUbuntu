@@ -279,7 +279,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo systemctl status blackbox_exporter   
    ````
    6. Configure Prometheus
-   Edit the prometheus config /etc/prometheus/prometheus.yml and append the following (using your IPs):
+   Edit the prometheus config */etc/prometheus/prometheus.yml* and append the following (using your IPs):
    ````yml
    - job_name: 'blackbox'
      metrics_path: /probe
@@ -303,7 +303,13 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo systemctl status prometheus
    ````
 
-## 4.5. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
+## 4.5 Install and Configure Loki
+-> [Install Loki Binary and Start as a Service](https://sbcode.net/grafana/install-loki-service/)
+
+## 4.6 Install and Configure Promtail
+-> * [Install Promtail Binary and Start as a Service](https://sbcode.net/grafana/install-promtail-service/)
+
+## 4.7. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
 
    1. Update packages and create /etc/yum.repos.d/grafana.repo
    ````console
@@ -339,13 +345,7 @@ We run both apps standalone via separate Docker container, without any dependenc
    * 7587 visualizing blackbox exporter metrics
    * 13186 Loki Dashboard
 
-## 4.6 Install and Configure Loki
--> [Install Loki Binary and Start as a Service](https://sbcode.net/grafana/install-loki-service/)
- 
-## 4.7 Install and Configure Promtail
 
-## 4.8 Grafana Loki Dashboard
-* 13186 Loki Dashboard
 
 # 5. REFERENCES
 
