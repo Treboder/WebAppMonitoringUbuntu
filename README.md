@@ -15,6 +15,15 @@ After performing all the steps described here, all services should be up and run
 The only thing to be done manually is to adjust the IPs to your own IPs ;-)
 
 ## 2.1. PREREQUISITES
+
+### YUM vs. DNF
+For Strato-Server runnning on Ubuntu, replace yum with dnf  
+````console
+sudo apt install dnf
+````
+and replace the scripts accordingly, otherwise continue with yum.
+
+### GIT
 Install Git and clone the repository on both server. 
 ````console
 sudo yum update -y
@@ -303,13 +312,13 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo systemctl status prometheus
    ````
 
-## 4.5 Install and Configure Loki
+## 4.5 Install and Configure Loki (on monitoring server)
 -> [Install Loki Binary and Start as a Service](https://sbcode.net/grafana/install-loki-service/)
 
-## 4.6 Install and Configure Promtail
+## 4.6 Install and Configure Promtail (on application server)
 -> * [Install Promtail Binary and Start as a Service](https://sbcode.net/grafana/install-promtail-service/)
 
-## 4.7. INSTALL GRAFANA AND CONFIGURE DEMO DASHBOARDS 
+## 4.7. INSTALL GRAFANA via YUM 
 
    1. Update packages and create /etc/yum.repos.d/grafana.repo
    ````console
@@ -336,16 +345,20 @@ We run both apps standalone via separate Docker container, without any dependenc
    sudo systemctl start grafana-server
    sudo systemctl status grafana-server
    ````
-   4. Connect with Prometheus and import few Dashboards
+
+
+## 4.8. INSTALL GRAFANA via APT (Ubuntu)
+https://computingforgeeks.com/how-to-install-grafana-on-ubuntu-linux-2/?utm_content=cmp-true
+
+## 4.9 Configure Grafana Dashboards
+Connect with Prometheus and import few Dashboards
    Grafana Dashboards are exposed to port :3000
-   Login works with user:admin nad password:admin.
+   Login works with user:admin and password:admin.
    After login, go to "Configuration" and add our Prometheus server as new data source
    As a quickstart to import the following dashboards with their IDs:
-   * 11074 and/or 1860 visualizing node exporter metrics
-   * 7587 visualizing blackbox exporter metrics
-   * 13186 Loki Dashboard
-
-
+* 11074, 11133, or 1860 visualizing node exporter metrics
+* 7587 visualizing blackbox exporter metrics
+* 13186 Loki Dashboard
 
 # 5. REFERENCES
 
