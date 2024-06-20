@@ -29,7 +29,7 @@ Install Git and clone the repository on both server.
 sudo yum update -y
 sudo yum install git -y
 git version
-git clone https://github.com/Treboder/WebAppMonitoringEC2
+git clone https://github.com/Treboder/WebAppMonitoringUbuntu
 ````
 
 ## 2.2. SETUP WEB APPLICATION SERVER
@@ -67,6 +67,15 @@ The script should have installed:
 * Grafana -> (:3000)
 * Loki -> (:3100)
 
+All services should be running and show active status, what can be checked with:
+````console
+systemctl status node_Exporter
+systemctl status blackbox_exporter
+systemctl status prometheus
+systemctl status grafana-server
+systemctl status loki
+````
+
 All services should be running and respond via following endpoints, what can be checked with:
 ````console
 curl localhost:9100 
@@ -85,7 +94,9 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 ## 2.4. FINAL STEP
 Most of the work is done, since all services are up and running.
 The only thing to do now is to connect Grafana with Prometheus as a datasource and import some standard dashboards, which can be easily done via Grafana GUI.
-Its all set and you are free to play around with your web app monitoring stack. 
+Its all set and you are free to play around with your web app monitoring stack.
+
+First Grafana-Login with admin:admin followed by request to create new password
 
 # 3. ARCHITECTURE
 
@@ -318,37 +329,29 @@ We run both apps standalone via separate Docker container, without any dependenc
 ## 4.6 Install and Configure Promtail (on application server)
 -> * [Install Promtail Binary and Start as a Service](https://sbcode.net/grafana/install-promtail-service/)
 
-## 4.7. INSTALL GRAFANA via YUM 
+## 4.7. INSTALL GRAFANA via APT (Ubuntu) 
 
-   1. Update packages and create /etc/yum.repos.d/grafana.repo
+   1. Install Grafana from APT repository
    ````console
-   sudo yum update -y
-   sudo nano /etc/yum.repos.d/grafana.repo
+sudo apt-get install -y apt-transport-https software-properties-common wget
+sudo mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+sudo apt-get update
+sudo apt-get install grafana
    ````
-   2. Add the text below to the just created /etc/yum.repos.d/grafana.repo
-   ````service
-   [grafana]
-   name=grafana
-   baseurl=https://packages.grafana.com/oss/rpm
-   repo_gpgcheck=1
-   enabled=1
-   gpgcheck=1
-   gpgkey=https://packages.grafana.com/gpg.key
-   sslverify=1
-   sslcacert=/etc/pki/tls/certs/ca-bundle.crt
-   ````
-   3. Install Grafana and start as service
+
+   2. Start the Grafana server with systemd
    ````console
-   sudo yum install grafana -y
-   sudo systemctl daemon-reload
-   sudo systemctl enable grafana-server
-   sudo systemctl start grafana-server
-   sudo systemctl status grafana-server
+sudo systemctl daemon-reload
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
    ````
 
+* https://computingforgeeks.com/how-to-install-grafana-on-ubuntu-linux-2/?utm_content=cmp-true
+* https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/   
 
-## 4.8. INSTALL GRAFANA via APT (Ubuntu)
-https://computingforgeeks.com/how-to-install-grafana-on-ubuntu-linux-2/?utm_content=cmp-true
+## 4.8. tbd
 
 ## 4.9 Configure Grafana Dashboards
 Connect with Prometheus and import few Dashboards
@@ -371,6 +374,7 @@ Connect with Prometheus and import few Dashboards
   * [Prometheus Node Exporter on AWS EC2](https://codewizardly.com/prometheus-on-aws-ec2-part2/)
   * [Install Blackbox Exporter to Monitor Websites With Prometheus](https://blog.ruanbekker.com/blog/2019/05/17/install-blackbox-exporter-to-monitor-websites-with-prometheus/)
   * [Installing Grafana on AWS EC2](https://medium.com/all-things-devops/how-to-install-grafana-on-aws-ec2-cefc01d5ff08)
+  *[Install Grafana from APT repository] (https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/)
   * [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full)
   * [Node Exporter for Prometheus Dashboard](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
   * [Prometheus Blackbox Exporter](https://grafana.com/grafana/dashboards/7587-prometheus-blackbox-exporter/)

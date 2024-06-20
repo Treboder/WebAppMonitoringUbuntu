@@ -1,3 +1,6 @@
+# install unzip first
+sudo apt-get install unzip
+
 # donwload and install loki
 curl -O -L https://github.com/grafana/loki/releases/download/v2.4.1/loki-linux-amd64.zip
 sudo unzip loki-linux-amd64.zip
