@@ -66,6 +66,7 @@ The script should have installed:
 * Prometheus (:9090)
 * Grafana -> (:3000)
 * Loki -> (:3100)
+* Promtail
 
 All services should be running and show active status, what can be checked with:
 ````console
@@ -74,6 +75,7 @@ systemctl status blackbox_exporter
 systemctl status prometheus
 systemctl status grafana-server
 systemctl status loki
+systemctl status promtail
 ````
 
 All services should be running and respond via following endpoints, what can be checked with:
