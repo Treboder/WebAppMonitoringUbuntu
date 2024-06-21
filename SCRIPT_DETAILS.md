@@ -247,7 +247,7 @@ sudo systemctl status grafana-server
 * https://computingforgeeks.com/how-to-install-grafana-on-ubuntu-linux-2/?utm_content=cmp-true
 * https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
 
-## 4.8 Configure Grafana Dashboards
+## 1.8 Configure Grafana Dashboards
 Connect with Prometheus and import few Dashboards
 Grafana Dashboards are exposed to port :3000
 Login works with user:admin and password:admin.

@@ -9,12 +9,12 @@ Later we extend the monitoring stack with [Grafana Loki](https://grafana.com/oss
 The experimental setup described here contains two AWS EC2 instances of type t2.micro with Amazon-Linux, associated to AWS' Elastic IPs.
 
 # 2. QUICKSTART
-The project provides two shell scripts that manage the entire installation/configuration routine.
-The first script prepares the web app server with two apps and the second sets up the monitoring server with Prometheus and Grafana. 
+The project provides shell scripts installing and configuring a demo web server and a monitoring server. 
+There are two scripts that manage the entire installation/configuration routine, one for the demo web server two apps and the second sets up the monitoring server with Prometheus and Grafana. 
 After performing all the steps described here, all services should be up and running.
 The only thing to be done manually is to adjust the IPs to your own IPs ;-)
 
-## 2.1. PREREQUISITES
+## 3. PREREQUISITES
 
 ### YUM vs. DNF
 For Strato-Server runnning on Ubuntu, replace yum with dnf  
@@ -32,7 +32,7 @@ git version
 git clone https://github.com/Treboder/WebAppMonitoringUbuntu
 ````
 
-## 2.2. SETUP WEB APPLICATION SERVER
+## 4. SETUP WEB APPLICATION SERVER
 SSH into your web app server and run the [setup_web_app_server.sh](setup_web_app_server.sh) script with:
 ````console
 bash ./setup_web_app_server.sh
@@ -53,7 +53,7 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 * Apache -> http://your_web_server_ip::80
 * REST -> http://your_web_server_ip::5050 
 
-## 2.3. SETUP MONITORING SERVER
+## 5. SETUP MONITORING SERVER
 After SSH-ing into your monitoring machine, the very first step is to set the IP of your web app server. 
 The repo already contains the [prometheus.yml](prometheus.yml) where Prometheus is configured, and IPs need to match your EC2 instances.
 Then simply run the [setup_monitoring_server.sh](setup_monitoring_server.sh) script with:
@@ -95,20 +95,27 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 * Loki -> http://your_monitoring_server_ip:3100
 * Promtail -> http://your_monitoring_server_ip:9080
 
-## 2.4. Update config.files
+## 5.1. Update config.files
 
 loki_config.yml
 prometheus.yml
 blackbox.yml
 
-## 2.5. Grafana Setup
+## 5.2 Grafana Setup
 Most of the work is done, since all services are up and running.
+Grafana Dashboards are exposed to port :3000
 First Grafana-Login with admin:admin followed by request to create new password.
-The only thing to do now is to connect Grafana with Prometheus and Loki as datasources. 
+After login, go to "Configuration" and connect Grafana with Prometheus and Loki as datasources.
 Then import some standard dashboards, which can be easily done via Grafana GUI.
-Its all set and you are free to play around with your web app monitoring stack.
 
-# 3. ARCHITECTURE
+As a quickstart to import the following dashboards with their IDs:
+* 11074, 11133, or 1860 visualizing node exporter metrics
+* 7587 visualizing blackbox exporter metrics
+* 13186 Loki Dashboard
+
+It's all set and you are free to play around with your web app monitoring stack.
+
+# 6. ARCHITECTURE
 
 tbd image
 
