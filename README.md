@@ -32,6 +32,12 @@ git version
 git clone https://github.com/Treboder/WebAppMonitoringUbuntu
 ````
 
+### Zip
+For Strato-Server runnning on Ubuntu, install zip
+````console
+sudo apt install zip
+````
+
 ## 4. SETUP WEB APPLICATION SERVER
 SSH into your web app server and run the [setup_web_app_server.sh](setup_web_app_server.sh) script with:
 ````console
@@ -85,7 +91,7 @@ curl localhost:9115
 curl localhost:9090
 curl localhost:3000
 curl localhost:3100/metrics
-curl localhost:9080/metrics
+curl localhost:9080
 ````
 Given that your AWS EC2 security group has properly configured inbound rules, we should be able to access the following endpoints from "outside":
 * Node Exporter -> http://your_monitoring_server_ip:9100
@@ -97,8 +103,10 @@ Given that your AWS EC2 security group has properly configured inbound rules, we
 
 ## 5.1. Update config.files
 
+Monitoring Server  -> Edit the prometheus config */etc/prometheus/prometheus.yml*
+Application Server -> Edit the Promtail config /usr/local/bin/config-promtail.yml
+
 loki_config.yml
-prometheus.yml
 blackbox.yml
 
 ## 5.2 Grafana Setup

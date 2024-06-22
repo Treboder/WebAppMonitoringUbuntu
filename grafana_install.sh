@@ -6,7 +6,10 @@ echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stab
 sudo apt-get update
 sudo apt-get install grafana-enterprise
 
-#Start the Grafana server with systemd
+# Start the Grafana server with systemd
 sudo systemctl daemon-reload
 sudo systemctl start grafana-server
 sudo systemctl status grafana-server
+
+# Activate Grafana service
+sudo systemctl enable grafana-agent.service
